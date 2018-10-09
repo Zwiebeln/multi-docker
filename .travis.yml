@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t zwiebeln/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run zwiebeln/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t zwiebeln/multi-client ./client 
+  - docker build -t zwiebeln/multi-nginx ./nginx
+  - docker build -t zwiebeln/multi-server ./server
+  - docker built -t zwiebeln/multi-worker ./worker
+  # login to docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # push code to docker hub
+  - docker push zwiebeln/multi-client
+  - docker push zwiebeln/multi-nginx
+  - docker push zwiebeln/multi-server
+  - docker push zwiebeln/multi-worker
