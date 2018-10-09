@@ -12,7 +12,7 @@ after_success:
   - docker build -t zwiebeln/multi-client ./client 
   - docker build -t zwiebeln/multi-nginx ./nginx
   - docker build -t zwiebeln/multi-server ./server
-  - docker built -t zwiebeln/multi-worker ./worker
+  - docker build -t zwiebeln/multi-worker ./worker
   # login to docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # push code to docker hub
